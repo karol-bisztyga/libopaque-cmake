@@ -1298,7 +1298,11 @@ int opaque_Register(const uint8_t *pwdU, const uint16_t pwdU_len,
 //(UsrSession, sid , ssid , S, pw): U picks r, x_u ←_R Z_q ; sets α := (H^0(pw))^r and
 //X_u := g^x_u ; sends α and X_u to S.
 // more or less corresponds to CreateCredentialRequest in the ietf draft
-int opaque_CreateCredentialRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t _sec[OPAQUE_USER_SESSION_SECRET_LEN/*+pwdU_len*/], uint8_t _pub[OPAQUE_USER_SESSION_PUBLIC_LEN]) {
+
+int opaque_CreateCredentialRequest(const uint8_t *pwdU, const uint16_t pwdU_len, void *ptsec, void *ptpub)
+{
+  uint8_t(*_sec)[OPAQUE_USER_SESSION_SECRET_LEN + pwdU_len] = (uint8_t(*)[OPAQUE_USER_SESSION_SECRET_LEN + pwdU_len])(ptsec);
+  uint8_t(*_pub)[OPAQUE_USER_SESSION_PUBLIC_LEN] = (uint8_t(*)[OPAQUE_USER_SESSION_PUBLIC_LEN])(ptpub);
   Opaque_UserSession_Secret *sec = (Opaque_UserSession_Secret*) _sec;
   Opaque_UserSession *pub = (Opaque_UserSession*) _pub;
 #ifdef TRACE
@@ -1598,7 +1602,11 @@ int opaque_UserAuth(const uint8_t _sec[OPAQUE_SERVER_AUTH_CTX_LEN], const uint8_
 
 // U computes: blinded PW
 // called CreateRegistrationRequest in the ietf cfrg rfc draft
-int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t _sec[OPAQUE_REGISTER_USER_SEC_LEN+pwdU_len], uint8_t M[crypto_core_ristretto255_BYTES]) {
+// int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t sec[OPAQUE_REGISTER_USER_SEC_LEN+pwdU_len], uint8_t M[crypto_core_ristretto255_BYTES]);
+int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, void* ptsec, void* ptM) {
+  uint8_t(*_sec)[OPAQUE_REGISTER_USER_SEC_LEN + pwdU_len] = (uint8_t(*)[OPAQUE_REGISTER_USER_SEC_LEN + pwdU_len])(ptsec);
+  uint8_t(*M)[crypto_core_ristretto255_BYTES] = (uint8_t(*)[crypto_core_ristretto255_BYTES])(ptM);
+
   Opaque_RegisterUserSec *sec = (Opaque_RegisterUserSec *) _sec;
   memcpy(&sec->pwdU, pwdU, pwdU_len);
   sec->pwdU_len = pwdU_len;

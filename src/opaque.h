@@ -186,7 +186,8 @@ int opaque_Register(const uint8_t *pwdU, const uint16_t pwdU_len, const uint8_t 
    @param [out] pub - the message to be sent to the server
    @return the function returns 0 if everything is correct
  */
-int opaque_CreateCredentialRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t sec[OPAQUE_USER_SESSION_SECRET_LEN+pwdU_len], uint8_t pub[OPAQUE_USER_SESSION_PUBLIC_LEN]);
+// int opaque_CreateCredentialRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t sec[OPAQUE_USER_SESSION_SECRET_LEN+pwdU_len], uint8_t pub[OPAQUE_USER_SESSION_PUBLIC_LEN]);
+int opaque_CreateCredentialRequest(const uint8_t *pwdU, const uint16_t pwdU_len, void* sec, void* pub);
 
 /**
    This is the same function as defined in the paper with name
@@ -288,7 +289,8 @@ int opaque_UserAuth(const uint8_t sec[OPAQUE_SERVER_AUTH_CTX_LEN], const uint8_t
    envelope configuration etc.
    @return the function returns 0 if everything is correct.
  */
-int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t sec[OPAQUE_REGISTER_USER_SEC_LEN+pwdU_len], uint8_t M[crypto_core_ristretto255_BYTES]);
+// int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, uint8_t sec[OPAQUE_REGISTER_USER_SEC_LEN+pwdU_len], uint8_t M[crypto_core_ristretto255_BYTES]);
+int opaque_CreateRegistrationRequest(const uint8_t *pwdU, const uint16_t pwdU_len, void* sec, void* M);
 
 /**
    Server evaluates OPRF and creates a user-specific public/private keypair
