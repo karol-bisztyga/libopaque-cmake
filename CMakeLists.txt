@@ -25,6 +25,10 @@ include_directories(
   ${LIBOPAQUE_PATH_PREFIX}/src/aux/
 )
 
+set_source_files_properties(${LIBOPAQUE_PATH_PREFIX}/src/common.c PROPERTIES LANGUAGE CXX)
+set_source_files_properties(${LIBOPAQUE_PATH_PREFIX}/src/opaque.c PROPERTIES LANGUAGE CXX)
+set_source_files_properties(${LIBOPAQUE_PATH_PREFIX}/src/aux/kdf_hkdf_sha256.c PROPERTIES LANGUAGE CXX)
+
 add_library(
   ${PACKAGE_NAME}
   SHARED
